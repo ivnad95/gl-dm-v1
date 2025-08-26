@@ -10,15 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-light: #F8FAFC;
+            --bg-light: #FDFDFD;
             --bg-card: #FFFFFF;
-            --border-color: #e2e8f0;
-            --text-dark: #0F172A;
-            --text-body: #334155;
-            --text-muted: #64748B;
-            --aurora-1: #7DD3FC;
-            --aurora-2: #A78BFA;
-            --aurora-3: #F0ABFC;
+            --border-color: #F0F0F0;
+            --text-dark: #111111;
+            --text-body: #444444;
+            --text-muted: #777777;
+            --sunrise-1: #FDE68A;
+            --sunrise-2: #FCA5A5;
         }
 
         body {
@@ -26,19 +25,33 @@
             background-color: var(--bg-light);
             color: var(--text-body);
         }
-
-        /* Gradient Spotlight Effect */
+        
+        /* Animated Grain Background */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(167, 139, 250, 0.1), transparent 40%);
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.04"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+            animation: grain 8s steps(10) infinite;
             z-index: -1;
-            pointer-events: none;
         }
+
+        @keyframes grain {
+          0%, 100% { transform: translate(0, 0); }
+          10% { transform: translate(-5%, -10%); }
+          20% { transform: translate(-15%, 5%); }
+          30% { transform: translate(7%, -25%); }
+          40% { transform: translate(-5%, 25%); }
+          50% { transform: translate(-15%, 10%); }
+          60% { transform: translate(15%, 0%); }
+          70% { transform: translate(0%, 15%); }
+          80% { transform: translate(3%, 35%); }
+          90% { transform: translate(-10%, 10%); }
+        }
+
 
         h1, h2, h3, h4, h5, h6 {
             color: var(--text-dark);
@@ -46,15 +59,20 @@
         .secondary-text {
             color: var(--text-muted);
         }
-        .gradient-aurora-text {
-            background: linear-gradient(90deg, var(--aurora-1), var(--aurora-2), var(--aurora-3));
+        .gradient-sunrise-text {
+            background: linear-gradient(90deg, var(--sunrise-1), var(--sunrise-2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-fill-color: transparent;
         }
-        .gradient-aurora-bg {
-            background: linear-gradient(90deg, var(--aurora-1), var(--aurora-2), var(--aurora-3));
+        .gradient-sunrise-bg {
+            background: linear-gradient(120deg, var(--sunrise-1), var(--sunrise-2));
+            background-size: 200% 200%;
+            transition: background-position 0.4s ease;
+        }
+        .btn-primary:hover {
+            background-position: 100% 0;
         }
 
         .section-reveal {
@@ -74,36 +92,33 @@
             box-shadow: 0 10px 20px rgba(17, 24, 39, 0.1);
         }
 
-        /* Aurora Flow Card for Light Theme */
-        .aurora-card {
+        /* NEW: 3D Tilt Card with Glass Sheen */
+        .minimalist-card {
             position: relative;
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            transition: background-color 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border-radius: 1.5rem;
+            transform-style: preserve-3d;
         }
-        .aurora-card::before {
-            content: "";
+        .minimalist-card:hover {
+            box-shadow: 0 30px 60px -15px rgba(17, 24, 39, 0.15);
+            border-color: #e5e7eb;
+        }
+        .minimalist-card .sheen {
             position: absolute;
-            inset: -1px;
-            border-radius: 1.5rem; /* Matches parent's border-radius */
-            background: linear-gradient(120deg, var(--aurora-1), var(--aurora-2), var(--aurora-3));
-            background-size: 200% 200%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 1.5rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
             opacity: 0;
-            z-index: -1;
-            transition: opacity 0.4s ease;
-            animation: flow 8s ease infinite;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
-        .aurora-card:hover::before {
+        .minimalist-card:hover .sheen {
             opacity: 1;
-        }
-        .aurora-card:hover {
-            border-color: transparent;
-        }
-
-        @keyframes flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
         
         /* Animated Process Timeline */
@@ -127,45 +142,41 @@
             transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         
-        /* AI Toolkit Tabs */
-        .ai-tool-tab {
-            transition: all 0.2s ease-in-out;
-            color: var(--text-muted);
+        /* FAQ Accordion */
+        .faq-item .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
         }
-        .ai-tool-tab.active {
-            background-color: var(--bg-card);
-            color: var(--text-dark);
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        .faq-item.open .faq-answer {
+            max-height: 200px; /* Adjust as needed */
         }
-        .spinner {
-            border: 2px solid rgba(0,0,0,0.1);
-            border-left-color: #A78BFA;
-            border-radius: 50%;
-            width: 16px;
-            height: 16px;
-            animation: spin 0.8s linear infinite;
+        .faq-item .faq-arrow {
+            transition: transform 0.3s ease-out;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .faq-item.open .faq-arrow {
+            transform: rotate(180deg);
         }
     </style>
 </head>
 <body>
 
     <!-- Header -->
-    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200/80">
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200/80 transition-all duration-300">
         <nav class="container mx-auto px-6 py-5 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-slate-900">
-                GreenLight<span class="gradient-aurora-text">.</span>
+                GreenLight<span class="gradient-sunrise-text">.</span>
             </a>
-            <div class="hidden md:flex items-center space-x-12">
-                <a href="#services" class="text-slate-600 hover:gradient-aurora-text transition-colors duration-200">Services</a>
-                <a href="#who-we-help" class="text-slate-600 hover:gradient-aurora-text transition-colors duration-200">Who We Help</a>
-                <a href="#process" class="text-slate-600 hover:gradient-aurora-text transition-colors duration-200">Our Process</a>
-                <a href="#contact" class="text-slate-600 hover:gradient-aurora-text transition-colors duration-200">Contact</a>
+            <div class="hidden md:flex items-center space-x-10">
+                <a href="#home" class="text-slate-600 hover:gradient-sunrise-text transition-colors duration-200">Home</a>
+                <a href="#about" class="text-slate-600 hover:gradient-sunrise-text transition-colors duration-200">About</a>
+                <a href="#services" class="text-slate-600 hover:gradient-sunrise-text transition-colors duration-200">Services</a>
+                <a href="#work" class="text-slate-600 hover:gradient-sunrise-text transition-colors duration-200">Our Work</a>
+                <a href="#faq" class="text-slate-600 hover:gradient-sunrise-text transition-colors duration-200">FAQ</a>
+                <a href="#contact" class="text-slate-600 hover:gradient-sunrise-text transition-colors duration-200">Contact</a>
             </div>
-            <a href="#contact" class="hidden md:inline-block px-8 py-3 text-white font-semibold rounded-lg shadow-lg gradient-aurora-bg btn-primary">
-                Get Started
+            <a href="#" class="hidden md:inline-block px-6 py-3 text-black font-semibold rounded-lg shadow-lg gradient-sunrise-bg btn-primary">
+                Portal Access
             </a>
             <button id="mobile-menu-button" class="md:hidden">
                 <svg class="w-6 h-6 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -173,25 +184,41 @@
         </nav>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
-            <a href="#services" class="block py-2 text-slate-600 hover:gradient-aurora-text">Services</a>
-            <a href="#who-we-help" class="block py-2 text-slate-600 hover:gradient-aurora-text">Who We Help</a>
-            <a href="#process" class="block py-2 text-slate-600 hover:gradient-aurora-text">Our Process</a>
-            <a href="#contact" class="block py-2 text-slate-600 hover:gradient-aurora-text">Contact</a>
-            <a href="#contact" class="block mt-2 px-5 py-2 text-white text-center font-semibold rounded-lg shadow-md gradient-aurora-bg">
-                Get Started
+            <a href="#home" class="block py-2 text-slate-600 hover:gradient-sunrise-text">Home</a>
+            <a href="#about" class="block py-2 text-slate-600 hover:gradient-sunrise-text">About</a>
+            <a href="#services" class="block py-2 text-slate-600 hover:gradient-sunrise-text">Services</a>
+            <a href="#work" class="block py-2 text-slate-600 hover:gradient-sunrise-text">Our Work</a>
+            <a href="#faq" class="block py-2 text-slate-600 hover:gradient-sunrise-text">FAQ</a>
+            <a href="#contact" class="block py-2 text-slate-600 hover:gradient-sunrise-text">Contact</a>
+            <a href="#" class="block mt-2 px-5 py-2 text-black text-center font-semibold rounded-lg shadow-md gradient-sunrise-bg">
+                Portal Access
             </a>
         </div>
     </header>
 
     <main>
         <!-- Hero Section -->
-        <section class="relative py-48 md:py-80 overflow-hidden">
+        <section id="home" class="relative py-40 md:py-64 overflow-hidden">
             <div class="container mx-auto px-6 text-center relative">
-                <h1 class="text-5xl md:text-8xl font-bold leading-tight mb-8">Effortless Digital Marketing. Exceptional Results.</h1>
-                <p class="text-xl md:text-2xl secondary-text max-w-4xl mx-auto mb-14">We are a digital design house that removes the complexity of marketing, so you can focus on running your business. We deliver measurable growth through a structured, transparent methodology.</p>
-                <a href="#contact" class="inline-block px-12 py-5 text-lg text-white font-bold rounded-lg shadow-lg gradient-aurora-bg btn-primary">
-                    Start Your Project
-                </a>
+                <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-8">We Handle Your Digital Struggles So You Can Focus on Your Business</h1>
+                <p class="text-xl md:text-2xl secondary-text max-w-4xl mx-auto mb-14">We understand the frustration of trying to manage SEO, social media, and content creation whilst running your business. Let us take care of your digital marketing so you can focus on what you do best.</p>
+                <div class="flex justify-center items-center gap-6">
+                    <a href="#contact" class="inline-block px-8 py-4 text-lg text-black font-bold rounded-lg shadow-lg gradient-sunrise-bg btn-primary">
+                        Get Your Free Strategy Call
+                    </a>
+                    <a href="#services" class="text-lg font-semibold text-slate-700 hover:gradient-sunrise-text">
+                        See How We Help &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Study Highlight Section -->
+        <section class="py-24 md:py-32 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <p class="text-lg font-semibold secondary-text tracking-widest uppercase">Just Like We Did for</p>
+                <p class="text-4xl md:text-5xl font-bold mt-4">OFF THE TEE GOLFWEAR</p>
+                <p class="text-xl secondary-text max-w-3xl mx-auto mt-6">We transformed their entire digital presence - from website redesign and SEO fixes to professional product photography and e-commerce setup. The same comprehensive service we can deliver for your business.</p>
             </div>
         </section>
 
@@ -199,101 +226,143 @@
         <section id="services" class="py-40 md:py-56">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-28 section-reveal">
-                    <h2 class="text-4xl md:text-6xl font-bold">A Fully Integrated Media Service</h2>
-                    <p class="text-xl secondary-text mt-8 max-w-3xl mx-auto">Our six-step approach takes you from initial discovery to full marketing management, ensuring a strong foundation for sustainable growth.</p>
+                    <h2 class="text-4xl md:text-6xl font-bold">Services That Actually Solve Your Problems</h2>
+                    <p class="text-xl secondary-text mt-8 max-w-3xl mx-auto">Here's exactly what you get when you work with us. These are the same services we delivered to OFF THE TEE GOLFWEAR, tailored to solve your specific business challenges.</p>
                 </div>
-                <div class="grid md:grid-cols-2 gap-16">
-                    <!-- Consulting Phase -->
-                    <div class="p-12 rounded-3xl section-reveal aurora-card">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-2xl bg-slate-100 mb-8">
-                           <svg class="w-8 h-8 gradient-aurora-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    <!-- Service Card 1 -->
+                    <div class="p-10 section-reveal minimalist-card">
+                        <div class="sheen"></div>
+                        <h3 class="text-2xl font-bold mb-4">Professional Website</h3>
+                        <p class="secondary-text text-lg mb-6">Fast, mobile-friendly websites that convert visitors into customers. No more losing potential sales to slow loading times or confusing navigation.</p>
+                        <div class="bg-amber-50 p-6 rounded-lg border border-amber-200 text-center">
+                            <p class="text-5xl font-bold text-amber-600" data-count="155">0%</p>
+                            <p class="font-semibold text-amber-800">Conversion Boost</p>
                         </div>
-                        <h3 class="text-3xl font-bold mb-5">Consulting Phase</h3>
-                        <p class="secondary-text text-lg mb-8">We build the strategic foundation for your digital success.</p>
-                        <ul class="space-y-4 text-lg">
-                            <li class="flex items-start"><svg class="w-6 h-6 text-purple-500 mr-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span><strong>SEO & Marketing Strategy</strong></span></li>
-                            <li class="flex items-start"><svg class="w-6 h-6 text-purple-500 mr-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span><strong>Content & Brand Frameworks</strong></span></li>
-                        </ul>
+                        <p class="mt-6 font-semibold">What This Means For You:</p>
+                        <p class="secondary-text">Turn your website into your best salesperson.</p>
                     </div>
-                    <!-- Implementation Phase -->
-                    <div class="p-12 rounded-3xl section-reveal aurora-card" style="transition-delay: 150ms;">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-2xl bg-slate-100 mb-8">
-                            <svg class="w-8 h-8 gradient-aurora-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2 1M4 7l2-1M4 7v2.5M12 21.5v-2.5M12 18.5l-2 1m2-1l2 1"></path></svg>
+                    <!-- Service Card 2 -->
+                    <div class="p-10 section-reveal minimalist-card" style="transition-delay: 100ms;">
+                        <div class="sheen"></div>
+                        <h3 class="text-2xl font-bold mb-4">SEO Optimization</h3>
+                        <p class="secondary-text text-lg mb-6">Technical fixes and optimization to help customers find you online. We handle all the SEO work so you can focus on serving your customers.</p>
+                        <div class="bg-amber-50 p-6 rounded-lg border border-amber-200 text-center">
+                            <p class="text-5xl font-bold text-amber-600" data-count="216">0%</p>
+                            <p class="font-semibold text-amber-800">Traffic Growth</p>
                         </div>
-                        <h3 class="text-3xl font-bold mb-5">Implementation Phase</h3>
-                        <p class="secondary-text text-lg mb-8">We handle the heavy lifting to bring your strategy to life.</p>
-                         <ul class="space-y-4 text-lg">
-                            <li class="flex items-start"><svg class="w-6 h-6 text-purple-500 mr-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span><strong>SEO & Content Execution</strong></span></li>
-                            <li class="flex items-start"><svg class="w-6 h-6 text-purple-500 mr-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span><strong>Full Marketing Management</strong></span></li>
-                        </ul>
+                        <p class="mt-6 font-semibold">What This Means For You:</p>
+                        <p class="secondary-text">Get found by customers actively searching for your services.</p>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Who We Help Section -->
-        <section id="who-we-help" class="py-40 md:py-56 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-28 section-reveal">
-                    <h2 class="text-4xl md:text-6xl font-bold">Designed For Businesses at Any Stage</h2>
-                    <p class="text-xl secondary-text mt-8 max-w-3xl mx-auto">We meet you where you are and provide the right strategy to help you reach the next level of digital maturity.</p>
-                </div>
-                <div class="grid md:grid-cols-3 gap-12 text-center">
-                    <div class="p-12 rounded-3xl section-reveal aurora-card">
-                        <h3 class="text-2xl font-bold mb-4">Getting Started</h3>
-                        <p class="secondary-text text-lg">For those with little to no online presence. We'll build your foundation from the ground up, establishing your brand across all essential digital channels.</p>
+                    <!-- Service Card 3 -->
+                    <div class="p-10 section-reveal minimalist-card" style="transition-delay: 200ms;">
+                        <div class="sheen"></div>
+                        <h3 class="text-2xl font-bold mb-4">Content Creation</h3>
+                        <p class="secondary-text text-lg mb-6">Professional photography, videos, and content that showcases your products. Stop struggling with creating content that actually converts.</p>
+                        <div class="bg-amber-50 p-6 rounded-lg border border-amber-200 text-center">
+                            <p class="text-5xl font-bold text-amber-600" data-count="277">0%</p>
+                            <p class="font-semibold text-amber-800">Content Performance</p>
+                        </div>
+                        <p class="mt-6 font-semibold">What This Means For You:</p>
+                        <p class="secondary-text">Make your products irresistible to potential customers.</p>
                     </div>
-                    <div class="p-12 rounded-3xl section-reveal aurora-card" style="transition-delay: 150ms;">
-                        <h3 class="text-2xl font-bold mb-4">Gaining Traction</h3>
-                        <p class="secondary-text text-lg">For businesses with an existing presence but lacking a clear strategy. We'll refine your approach, optimize your channels, and build a roadmap for growth.</p>
+                     <!-- Service Card 4 -->
+                    <div class="p-10 section-reveal minimalist-card" style="transition-delay: 300ms;">
+                        <div class="sheen"></div>
+                        <h3 class="text-2xl font-bold mb-4">Technical Setup</h3>
+                        <p class="secondary-text text-lg mb-6">E-commerce platforms, analytics, and all the technical bits sorted properly. We handle the complicated setup so everything works seamlessly.</p>
+                        <div class="bg-amber-50 p-6 rounded-lg border border-amber-200 text-center">
+                            <p class="text-5xl font-bold text-amber-600" data-count="82">0%</p>
+                            <p class="font-semibold text-amber-800">Setup Success Rate</p>
+                        </div>
+                        <p class="mt-6 font-semibold">What This Means For You:</p>
+                        <p class="secondary-text">Get all your technical systems working together perfectly.</p>
                     </div>
-                    <div class="p-12 rounded-3xl section-reveal aurora-card" style="transition-delay: 300ms;">
-                        <h3 class="text-2xl font-bold mb-4">Scaling Up</h3>
-                        <p class="secondary-text text-lg">For advanced businesses with a monetized presence. We'll act as your integrated marketing partner, optimizing for performance and maximizing your ROI.</p>
+                     <!-- Service Card 5 -->
+                    <div class="p-10 section-reveal minimalist-card" style="transition-delay: 400ms;">
+                        <div class="sheen"></div>
+                        <h3 class="text-2xl font-bold mb-4">Growth Strategy</h3>
+                        <p class="secondary-text text-lg mb-6">Clear plan for improving your digital presence and growing your business. No confusing jargon - just straightforward strategies that work.</p>
+                        <div class="bg-amber-50 p-6 rounded-lg border border-amber-200 text-center">
+                            <p class="text-5xl font-bold text-amber-600" data-count="346">0%</p>
+                            <p class="font-semibold text-amber-800">Engagement Growth</p>
+                        </div>
+                        <p class="mt-6 font-semibold">What This Means For You:</p>
+                        <p class="secondary-text">Get a clear roadmap for growing your business online.</p>
+                    </div>
+                     <!-- Service Card 6 -->
+                    <div class="p-10 section-reveal minimalist-card" style="transition-delay: 500ms;">
+                        <div class="sheen"></div>
+                        <h3 class="text-2xl font-bold mb-4">Ongoing Support</h3>
+                        <p class="secondary-text text-lg mb-6">Maintenance, updates, and continued optimization to keep everything running smoothly. We don't disappear after the project is done.</p>
+                        <div class="bg-amber-50 p-6 rounded-lg border border-amber-200 text-center">
+                            <p class="text-5xl font-bold text-amber-600" data-count="85">0%</p>
+                            <p class="font-semibold text-amber-800">Uptime Guarantee</p>
+                        </div>
+                        <p class="mt-6 font-semibold">What This Means For You:</p>
+                        <p class="secondary-text">Keep your digital presence working effectively long-term.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Process Section -->
-        <section id="process" class="py-40 md:py-56">
+        <section id="process" class="py-40 md:py-56 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-32 section-reveal">
-                    <h2 class="text-4xl md:text-6xl font-bold">Our Proven Six-Step Approach</h2>
-                    <p class="text-xl secondary-text mt-8 max-w-3xl mx-auto">A structured methodology for predictable success and complete transparency.</p>
+                    <h2 class="text-4xl md:text-6xl font-bold">How We Deliver These Services</h2>
+                    <p class="text-xl secondary-text mt-8 max-w-3xl mx-auto">Our proven process for delivering all these services effectively, just like we did for OFF THE TEE GOLFWEAR.</p>
                 </div>
                 <div id="process-timeline-container" class="max-w-3xl mx-auto">
                     <div id="timeline-line"></div>
                     <div class="space-y-24">
-                        <!-- Steps will be injected by JS -->
+                        <!-- Steps will be injected by JS for the 4-step process -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-40 md:py-56">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-28 section-reveal">
+                    <h2 class="text-4xl md:text-6xl font-bold">We Get It - Digital Marketing Is Overwhelming</h2>
+                    <p class="text-xl secondary-text mt-8 max-w-3xl mx-auto">We started GreenLight because we saw too many brilliant business owners struggling with SEO, social media, and content creation when they should be focusing on what they do best.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="section-reveal">
+                        <h3 class="text-3xl font-bold mb-6">Why We Started GreenLight</h3>
+                        <div class="space-y-6 text-lg secondary-text">
+                            <p>We founded GreenLight because we watched countless business owners lose sleep over their digital marketing. Brilliant entrepreneurs who could run amazing businesses were getting bogged down trying to figure out SEO, social media algorithms, and content creation.</p>
+                            <p>You shouldn't have to become a digital marketing expert just to grow your business. So we created GreenLight - a straightforward digital marketing partner that takes care of all the complicated bits so you can get back to doing what you love.</p>
+                        </div>
+                    </div>
+                    <div class="section-reveal" style="transition-delay: 150ms;">
+                        <div class="p-10 rounded-3xl minimalist-card space-y-6">
+                            <div class="sheen"></div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Our Mission</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start"><span class="gradient-sunrise-text font-bold text-2xl mr-4">&bull;</span><span class="secondary-text text-lg">Take the Stress Away</span></li>
+                                    <li class="flex items-start"><span class="gradient-sunrise-text font-bold text-2xl mr-4">&bull;</span><span class="secondary-text text-lg">Deliver Real Results</span></li>
+                                    <li class="flex items-start"><span class="gradient-sunrise-text font-bold text-2xl mr-4">&bull;</span><span class="secondary-text text-lg">Be Your Partner</span></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- AI Toolkit Section -->
-        <section id="ai-toolkit" class="py-40 md:py-56 bg-white">
+        <!-- FAQ Section -->
+        <section id="faq" class="py-40 md:py-56 bg-white">
             <div class="container mx-auto px-6">
-                <div class="rounded-3xl p-8 md:p-16 lg:p-20 max-w-6xl mx-auto aurora-card">
-                    <div class="text-center mb-16 section-reveal">
-                        <h2 class="text-4xl md:text-6xl font-bold">AI-Powered Toolkit</h2>
-                        <p class="text-xl secondary-text mt-8">A suite of intelligent tools to demonstrate our capabilities and provide instant value.</p>
-                    </div>
-                    
-                    <!-- AI Tool Tabs -->
-                    <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-12 p-2 bg-slate-100/80 rounded-full">
-                        <button data-tool="competitor" class="ai-tool-tab active px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold">Competitor Analysis</button>
-                        <button data-tool="keywords" class="ai-tool-tab px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold">Keyword Clusters</button>
-                        <button data-tool="titles" class="ai-tool-tab px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold">Blog Titles</button>
-                        <button data-tool="social" class="ai-tool-tab px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold">Social Posts</button>
-                        <button data-tool="persona" class="ai-tool-tab px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold">Audience Persona</button>
-                        <button data-tool="abtest" class="ai-tool-tab px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold">A/B Test Headlines</button>
-                    </div>
-
-                    <!-- AI Tool Content Area -->
-                    <div id="ai-tool-content-area">
-                        <!-- Tools will be injected here -->
-                    </div>
+                <div class="text-center mb-28 section-reveal">
+                    <h2 class="text-4xl md:text-6xl font-bold">Frequently Asked Questions</h2>
+                    <p class="text-xl secondary-text mt-8 max-w-3xl mx-auto">Get straight answers about what we do, how we work, and what you can expect. No marketing fluff - just honest information.</p>
+                </div>
+                <div class="max-w-3xl mx-auto space-y-6" id="faq-container">
+                    <!-- FAQ items will be injected by JS -->
                 </div>
             </div>
         </section>
@@ -302,53 +371,92 @@
         <section id="contact" class="py-40 md:py-56">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16 section-reveal">
-                    <h2 class="text-4xl md:text-6xl font-bold">Ready to Elevate Your Digital Presence?</h2>
-                    <p class="text-xl secondary-text mt-8">Let's discuss how GreenLight can help you achieve your goals. Fill out the form below to get started.</p>
+                    <h2 class="text-4xl md:text-6xl font-bold">Ready to Transform Your Digital Presence?</h2>
+                    <p class="text-xl secondary-text mt-8">Let's discuss your project. We'll show you exactly how we can deliver the same level of comprehensive service we provided to OFF THE TEE GOLFWEAR.</p>
                 </div>
-                <form action="#" method="POST" class="section-reveal max-w-2xl mx-auto">
-                    <div class="grid sm:grid-cols-2 gap-x-6 gap-y-8">
+                <div class="grid lg:grid-cols-2 gap-16">
+                    <div class="space-y-8">
+                        <h3 class="text-3xl font-bold">Let's Have a Chat</h3>
                         <div>
-                            <label for="name" class="block text-lg font-medium text-slate-800 mb-2">Name</label>
-                            <input type="text" name="name" id="name" class="block w-full px-5 py-4 text-lg bg-slate-100 border-transparent rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                            <p class="font-semibold text-lg">Email Us</p>
+                            <a href="mailto:hello@greenlightdigital.co.uk" class="secondary-text text-lg hover:gradient-sunrise-text">hello@greenlightdigital.co.uk</a>
                         </div>
-                        <div>
-                            <label for="email" class="block text-lg font-medium text-slate-800 mb-2">Email</label>
-                            <input type="email" name="email" id="email" class="block w-full px-5 py-4 text-lg bg-slate-100 border-transparent rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                         <div>
+                            <p class="font-semibold text-lg">Call Us</p>
+                            <p class="secondary-text text-lg">+44 20 7946 0958 (Mon-Fri, 9am-6pm)</p>
                         </div>
-                        <div class="sm:col-span-2">
-                            <label for="message" class="block text-lg font-medium text-slate-800 mb-2">Message</label>
-                            <textarea name="message" id="message" rows="5" class="block w-full px-5 py-4 text-lg bg-slate-100 border-transparent rounded-lg focus:ring-purple-500 focus:border-purple-500"></textarea>
+                         <div>
+                            <p class="font-semibold text-lg">Visit Us</p>
+                            <p class="secondary-text text-lg">123 Digital Street, London, SW1A 1AA</p>
                         </div>
                     </div>
-                    <div class="mt-10 text-center">
-                        <button type="submit" class="inline-block px-12 py-5 text-lg text-white font-bold rounded-lg shadow-lg gradient-aurora-bg btn-primary">
-                            Send Message
-                        </button>
-                    </div>
-                </form>
+                    <form action="#" method="POST" class="section-reveal">
+                        <div class="grid sm:grid-cols-2 gap-x-6 gap-y-6">
+                            <div>
+                                <label for="name" class="block text-lg font-medium text-slate-800 mb-2">Full Name *</label>
+                                <input type="text" name="name" id="name" placeholder="John Smith" class="block w-full px-5 py-4 text-lg bg-slate-100 border-transparent rounded-lg focus:ring-amber-500 focus:border-amber-500">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-lg font-medium text-slate-800 mb-2">Email Address *</label>
+                                <input type="email" name="email" id="email" placeholder="john@company.co.uk" class="block w-full px-5 py-4 text-lg bg-slate-100 border-transparent rounded-lg focus:ring-amber-500 focus:border-amber-500">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label for="message" class="block text-lg font-medium text-slate-800 mb-2">Tell Us About Your Project *</label>
+                                <textarea name="message" id="message" rows="5" placeholder="Describe your current situation and what you'd like to achieve..." class="block w-full px-5 py-4 text-lg bg-slate-100 border-transparent rounded-lg focus:ring-amber-500 focus:border-amber-500"></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <button type="submit" class="w-full px-12 py-5 text-lg text-black font-bold rounded-lg shadow-lg gradient-sunrise-bg btn-primary">
+                                Get Your Free Consultation
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
     <footer class="bg-white text-slate-500">
-        <div class="container mx-auto px-6 py-16 text-center">
-            <p>&copy; 2024 GreenLight Digital Media. All rights reserved.</p>
-            <div class="flex justify-center space-x-8 mt-6">
-                <a href="#" class="hover:text-slate-800 transition-colors">Twitter</a>
-                <a href="#" class="hover:text-slate-800 transition-colors">LinkedIn</a>
-                <a href="#" class="hover:text-slate-800 transition-colors">Facebook</a>
+        <div class="container mx-auto px-6 py-16">
+            <div class="grid md:grid-cols-4 gap-8 text-center md:text-left">
+                <div>
+                    <h4 class="text-lg font-bold text-slate-800">GreenLight Digital Media</h4>
+                    <p class="mt-4 text-slate-500">Transforming businesses through innovative digital marketing strategies.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold text-slate-800">Quick Links</h5>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#home" class="hover:text-slate-800">Home</a></li>
+                        <li><a href="#about" class="hover:text-slate-800">About Us</a></li>
+                        <li><a href="#services" class="hover:text-slate-800">Services</a></li>
+                        <li><a href="#work" class="hover:text-slate-800">Our Work</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h5 class="font-semibold text-slate-800">Our Services</h5>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#services" class="hover:text-slate-800">SEO Optimization</a></li>
+                        <li><a href="#services" class="hover:text-slate-800">Web Development</a></li>
+                        <li><a href="#services" class="hover:text-slate-800">Content Strategy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold text-slate-800">Stay Connected</h5>
+                    <p class="mt-4">Subscribe for the latest digital marketing insights.</p>
+                    <div class="mt-4 flex">
+                        <input type="email" placeholder="Your email" class="w-full px-4 py-2 bg-slate-100 rounded-l-md focus:ring-amber-500 focus:border-amber-500">
+                        <button class="px-4 py-2 text-black gradient-sunrise-bg rounded-r-md font-semibold">Go</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-16 border-t border-slate-200 pt-8 text-center text-sm text-slate-500">
+                <p>&copy; 2025 GreenLight Digital Media. Privacy Policy | Terms of Service</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // --- Gradient Spotlight ---
-        document.body.addEventListener('mousemove', e => {
-            document.body.style.setProperty('--mouse-x', `${e.clientX}px`);
-            document.body.style.setProperty('--mouse-y', `${e.clientY}px`);
-        });
-
         // --- Mobile menu toggle ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -373,12 +481,10 @@
 
         // --- Animated Process Timeline ---
         const processSteps = [
-            { title: "Discovery & Audit", description: "We dive deep into your business, market, and competitors with comprehensive SEO and business audits." },
-            { title: "Strategic Roadmap", description: "We develop a clear, actionable 30-60 day plan tailored to your goals and expected outcomes." },
-            { title: "Foundation & Optimization", description: "We implement critical technical and on-page SEO improvements that form the bedrock of your digital presence." },
-            { title: "Content Creation", description: "Our team develops high-quality, engaging content that speaks to your audience and fuels your marketing channels." },
-            { title: "Integrated Management", description: "We manage your digital channels—from social media to paid ads—ensuring a cohesive and effective marketing effort." },
-            { title: "Transparent Reporting", description: "You get clear, monthly reports focused on ROI and progress, with full access to our Notion project dashboards." }
+            { title: "We Listen", description: "Understanding your business challenges and current digital situation." },
+            { title: "We Plan", description: "Creating a comprehensive strategy covering all the services you need." },
+            { title: "We Execute", description: "Delivering all services professionally whilst you focus on your business." },
+            { title: "We Support", description: "Ongoing maintenance and optimization to keep everything working perfectly." }
         ];
 
         const timelineContainer = document.querySelector('#process-timeline-container .space-y-24');
@@ -386,7 +492,7 @@
             const stepEl = document.createElement('div');
             stepEl.className = 'timeline-step flex items-start';
             stepEl.innerHTML = `
-                <div class="gradient-aurora-bg text-white w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0 mr-8 z-10">${index + 1}</div>
+                <div class="gradient-sunrise-bg text-black w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0 mr-8 z-10">0${index + 1}</div>
                 <div>
                     <h4 class="font-bold text-2xl mb-2">${step.title}</h4>
                     <p class="secondary-text text-lg">${step.description}</p>
@@ -410,383 +516,99 @@
             });
         }, { threshold: 0.5 });
         timelineObserver.observe(document.getElementById('process-timeline-container'));
+        
+        // --- FAQ Accordion ---
+        const faqs = [
+            { q: "What services do you actually provide?", a: "We offer comprehensive digital services including website design & development, SEO & technical optimization, professional product photography & content creation, e-commerce setup (TikTok Shop, Google Merchant), digital marketing strategy, and technical cleanup & maintenance." },
+            { q: "How much do your services cost?", a: "Our pricing is tailored to your specific needs. We provide a detailed quote after our free, no-obligation strategy call where we assess your business goals and challenges." },
+            { q: "How long does a typical project take?", a: "Project timelines vary depending on the scope. A standard website redesign and SEO setup typically takes 4-8 weeks. We provide a clear timeline before any work begins." },
+            { q: "Do you guarantee results?", a: "While we can't guarantee specific rankings or sales figures (and you should be wary of anyone who does), we do guarantee a professional, transparent process focused on the strategies that deliver real, measurable growth for your business." },
+            { q: "What if my current website is a mess?", a: "That's what we're here for! We specialize in technical cleanups and complete redesigns. We'll audit your existing site and create a clear plan to fix the issues and build a high-performing digital presence." },
+        ];
 
-
-        // --- Gemini AI Toolkit ---
-        const toolTabs = document.querySelectorAll('.ai-tool-tab');
-        const toolContentArea = document.getElementById('ai-tool-content-area');
-
-        const toolTemplates = {
-            competitor: {
-                title: "Live AI Strategy Engine",
-                description: "Enter your website and a competitor's to see our AI generate a high-level analysis in real-time.",
-                inputs: `
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label for="your-url" class="block text-lg font-medium text-slate-800 mb-2">Your Website URL</label>
-                            <input type="text" id="your-url" placeholder="your-business.com" class="block w-full px-5 py-4 text-lg bg-slate-100 border-slate-200 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                        </div>
-                        <div>
-                            <label for="competitor-url" class="block text-lg font-medium text-slate-800 mb-2">Competitor's URL</label>
-                            <input type="text" id="competitor-url" placeholder="competitor.com" class="block w-full px-5 py-4 text-lg bg-slate-100 border-slate-200 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                        </div>
-                    </div>`,
-                buttonText: "Generate Snapshot",
-                getPrompt: () => {
-                    const yourUrl = document.getElementById('your-url').value;
-                    const competitorUrl = document.getElementById('competitor-url').value;
-                    return `You are an expert SEO and digital marketing strategist. Perform a high-level competitive analysis comparing "${yourUrl}" (our site) and "${competitorUrl}" (the competitor). Based on general knowledge of what makes a website successful, provide a summary. Your response must include:
-                    1. Two key strengths for our site.
-                    2. Two key strengths for the competitor's site.
-                    3. Three actionable, high-impact opportunities for our site to outperform the competitor.
-                    Keep each point concise (1-2 sentences).`;
-                },
-                schema: {
-                    type: "OBJECT",
-                    properties: {
-                        yourStrengths: { type: "ARRAY", items: { type: "STRING" } },
-                        competitorStrengths: { type: "ARRAY", items: { type: "STRING" } },
-                        opportunities: { type: "ARRAY", items: { type: "STRING" } }
-                    }
-                },
-                displayResults: (data, container) => {
-                     container.innerHTML = `
-                        <div class="text-center mb-12">
-                             <h3 class="text-3xl font-bold">Analysis Complete</h3>
-                        </div>
-                        <div class="grid md:grid-cols-3 gap-8 text-left">
-                            <div class="p-8 rounded-2xl aurora-card">
-                                <h4 class="font-bold text-xl mb-4 text-purple-500">Your Strengths</h4>
-                                <ul class="space-y-3 list-disc list-inside secondary-text">${data.yourStrengths.map(s => `<li>${s}</li>`).join('')}</ul>
-                            </div>
-                            <div class="p-8 rounded-2xl aurora-card">
-                                <h4 class="font-bold text-xl mb-4 text-pink-500">Competitor's Strengths</h4>
-                                <ul class="space-y-3 list-disc list-inside secondary-text">${data.competitorStrengths.map(s => `<li>${s}</li>`).join('')}</ul>
-                            </div>
-                            <div class="bg-purple-50 p-8 rounded-2xl border border-purple-200">
-                                <h4 class="font-bold text-xl mb-4 text-purple-800">Key Opportunities</h4>
-                                <ul class="space-y-3 list-disc list-inside text-slate-700">${data.opportunities.map(s => `<li>${s}</li>`).join('')}</ul>
-                            </div>
-                        </div>`;
-                }
-            },
-            keywords: {
-                title: "AI Keyword Cluster Generator",
-                description: "Enter a core topic to discover and group related keywords into strategic content clusters.",
-                inputs: `
-                    <div>
-                        <label for="keyword-topic" class="block text-lg font-medium text-slate-800 mb-2">Core Topic</label>
-                        <input type="text" id="keyword-topic" placeholder="e.g., 'sustainable fashion'" class="block w-full px-5 py-4 text-lg bg-slate-100 border-slate-200 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                    </div>`,
-                buttonText: "Generate Clusters",
-                getPrompt: () => {
-                    const topic = document.getElementById('keyword-topic').value;
-                    return `As an SEO expert, generate 3-4 thematic keyword clusters for the core topic: "${topic}". For each cluster, provide a clear cluster name and a list of 5-7 related long-tail keywords.`;
-                },
-                schema: {
-                    type: "OBJECT",
-                    properties: {
-                        clusters: {
-                            type: "ARRAY",
-                            items: {
-                                type: "OBJECT",
-                                properties: {
-                                    clusterName: { type: "STRING" },
-                                    keywords: { type: "ARRAY", items: { type: "STRING" } }
-                                }
-                            }
-                        }
-                    }
-                },
-                displayResults: (data, container) => {
-                    let html = `<div class="text-center mb-12"><h3 class="text-3xl font-bold">Keyword Clusters Generated</h3></div><div class="grid md:grid-cols-2 gap-8 text-left">`;
-                    data.clusters.forEach(cluster => {
-                        html += `
-                            <div class="p-8 rounded-2xl aurora-card">
-                                <h4 class="font-bold text-xl mb-4 text-purple-500">${cluster.clusterName}</h4>
-                                <ul class="space-y-2 list-disc list-inside secondary-text">${cluster.keywords.map(k => `<li>${k}</li>`).join('')}</ul>
-                            </div>`;
-                    });
-                    html += `</div>`;
-                    container.innerHTML = html;
-                }
-            },
-            titles: {
-                title: "AI Blog Title Generator",
-                description: "Enter a keyword or topic, and get a list of compelling, SEO-friendly blog post titles.",
-                inputs: `
-                    <div>
-                        <label for="title-topic" class="block text-lg font-medium text-slate-800 mb-2">Topic or Keyword</label>
-                        <input type="text" id="title-topic" placeholder="e.g., 'remote work productivity'" class="block w-full px-5 py-4 text-lg bg-slate-100 border-slate-200 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                    </div>`,
-                buttonText: "Generate Titles",
-                 getPrompt: () => {
-                    const topic = document.getElementById('title-topic').value;
-                    return `You are a professional copywriter. Generate 5 compelling, SEO-friendly blog post titles for the topic: "${topic}".`;
-                },
-                schema: { type: "OBJECT", properties: { titles: { type: "ARRAY", items: { type: "STRING" } } } },
-                displayResults: (data, container) => {
-                    container.innerHTML = `
-                        <div class="text-center mb-12"><h3 class="text-3xl font-bold">Blog Titles Generated</h3></div>
-                        <div class="p-8 rounded-2xl aurora-card text-left">
-                            <ol class="space-y-4 list-decimal list-inside text-lg secondary-text">
-                                ${data.titles.map(title => `<li>${title}</li>`).join('')}
-                            </ol>
-                        </div>`;
-                }
-            },
-            social: {
-                title: "AI Social Media Post Creator",
-                description: "Provide a topic or a link, and our AI will draft an engaging post for your social channels.",
-                inputs: `
-                    <div>
-                        <label for="social-topic" class="block text-lg font-medium text-slate-800 mb-2">Topic or Article Link</label>
-                        <input type="text" id="social-topic" placeholder="e.g., 'The future of AI in marketing'" class="block w-full px-5 py-4 text-lg bg-slate-100 border-slate-200 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                    </div>`,
-                buttonText: "Create Post",
-                getPrompt: () => {
-                    const topic = document.getElementById('social-topic').value;
-                    return `You are a social media manager. Write an engaging LinkedIn post about the following topic or link: "${topic}". The post should be professional, include a question to spark engagement, and end with 3-5 relevant hashtags.`;
-                },
-                schema: { type: "OBJECT", properties: { post: { type: "STRING" }, hashtags: { type: "STRING" } } },
-                displayResults: (data, container) => {
-                     container.innerHTML = `
-                        <div class="text-center mb-12"><h3 class="text-3xl font-bold">Social Post Drafted</h3></div>
-                        <div class="p-8 rounded-2xl aurora-card text-left">
-                            <p class="text-lg secondary-text whitespace-pre-line">${data.post}</p>
-                            <p class="text-lg mt-6 font-semibold text-purple-500">${data.hashtags}</p>
-                        </div>`;
-                }
-            },
-            persona: {
-                title: "AI Audience Persona Generator",
-                description: "Describe your business to generate a detailed target customer profile, including demographics and motivations.",
-                inputs: `
-                    <div>
-                        <label for="persona-desc" class="block text-lg font-medium text-slate-800 mb-2">Your Business Description</label>
-                        <textarea id="persona-desc" rows="3" placeholder="e.g., 'A subscription box for gourmet, artisanal snacks.'" class="block w-full px-5 py-4 text-lg bg-slate-100 border-slate-200 rounded-lg focus:ring-purple-500 focus:border-purple-500"></textarea>
-                    </div>`,
-                buttonText: "Generate Persona",
-                getPrompt: () => {
-                    const desc = document.getElementById('persona-desc').value;
-                    return `You are a market research expert. Based on this business description: "${desc}", create a detailed customer persona. Include a name, age range, job title, key goals (2-3), and key pain points (2-3).`;
-                },
-                schema: {
-                    type: "OBJECT",
-                    properties: {
-                        name: { type: "STRING" },
-                        age: { type: "STRING" },
-                        jobTitle: { type: "STRING" },
-                        goals: { type: "ARRAY", items: { type: "STRING" } },
-                        painPoints: { type: "ARRAY", items: { type: "STRING" } }
-                    }
-                },
-                displayResults: (data, container) => {
-                    container.innerHTML = `
-                        <div class="text-center mb-12"><h3 class="text-3xl font-bold">Audience Persona Created</h3></div>
-                        <div class="p-8 rounded-2xl aurora-card text-left">
-                            <h4 class="text-2xl font-bold mb-4">${data.name} (${data.age}, ${data.jobTitle})</h4>
-                            <div class="mt-6">
-                                <h5 class="font-bold text-lg text-purple-500">Goals</h5>
-                                <ul class="list-disc list-inside secondary-text mt-2">${data.goals.map(g => `<li>${g}</li>`).join('')}</ul>
-                            </div>
-                            <div class="mt-6">
-                                <h5 class="font-bold text-lg text-pink-500">Pain Points</h5>
-                                <ul class="list-disc list-inside secondary-text mt-2">${data.painPoints.map(p => `<li>${p}</li>`).join('')}</ul>
-                            </div>
-                        </div>`;
-                }
-            },
-            abtest: {
-                title: "AI A/B Test Headline Suggester",
-                description: "Enter an existing headline to get a data-driven alternative suggestion for A/B testing.",
-                inputs: `
-                    <div>
-                        <label for="abtest-headline" class="block text-lg font-medium text-slate-800 mb-2">Your Current Headline</label>
-                        <input type="text" id="abtest-headline" placeholder="e.g., 'Our New Software Update'" class="block w-full px-5 py-4 text-lg bg-slate-100 border-slate-200 rounded-lg focus:ring-purple-500 focus:border-purple-500">
-                    </div>`,
-                buttonText: "Suggest Alternative",
-                getPrompt: () => {
-                    const headline = document.getElementById('abtest-headline').value;
-                    return `You are a conversion rate optimization specialist. Given the headline "${headline}", suggest one strong alternative for an A/B test. Also provide a brief (1-2 sentence) reasoning for why your suggestion might perform better.`;
-                },
-                schema: {
-                    type: "OBJECT",
-                    properties: {
-                        alternativeHeadline: { type: "STRING" },
-                        reasoning: { type: "STRING" }
-                    }
-                },
-                displayResults: (data, container) => {
-                    const original = document.getElementById('abtest-headline').value;
-                    container.innerHTML = `
-                        <div class="text-center mb-12"><h3 class="text-3xl font-bold">A/B Test Suggestion</h3></div>
-                        <div class="grid md:grid-cols-2 gap-8 text-left">
-                            <div class="p-8 rounded-2xl aurora-card">
-                                <h4 class="font-bold text-xl mb-4 text-slate-500">Original Headline</h4>
-                                <p class="text-lg secondary-text">"${original}"</p>
-                            </div>
-                             <div class="p-8 rounded-2xl bg-purple-50 border border-purple-200">
-                                <h4 class="font-bold text-xl mb-4 text-purple-800">Suggested Alternative</h4>
-                                <p class="text-lg text-slate-700">"${data.alternativeHeadline}"</p>
-                            </div>
-                        </div>
-                        <div class="mt-8 p-8 rounded-2xl aurora-card">
-                             <h4 class="font-bold text-xl mb-4 text-purple-500">Reasoning</h4>
-                             <p class="text-lg secondary-text">${data.reasoning}</p>
-                        </div>
-                        `;
-                }
-            }
-        };
-
-        function renderTool(toolKey) {
-            const tool = toolTemplates[toolKey];
-            toolContentArea.innerHTML = `
-                <div id="ai-form-container-${toolKey}" class="section-reveal in-view">
-                    <div class="text-center mb-12">
-                        <h3 class="text-3xl font-bold">${tool.title}</h3>
-                        <p class="text-lg secondary-text mt-4">${tool.description}</p>
-                    </div>
-                    <div class="max-w-3xl mx-auto">
-                        ${tool.inputs}
-                        <div class="text-center mt-8">
-                            <button id="generate-${toolKey}-button" class="inline-block px-10 py-5 text-lg text-white font-bold rounded-lg shadow-lg gradient-aurora-bg btn-primary">
-                                ✨ ${tool.buttonText}
-                            </button>
-                        </div>
-                    </div>
+        const faqContainer = document.getElementById('faq-container');
+        faqs.forEach(faq => {
+            const item = document.createElement('div');
+            item.className = 'faq-item border-b border-slate-200 py-6';
+            item.innerHTML = `
+                <div class="faq-question flex justify-between items-center cursor-pointer">
+                    <h4 class="text-xl font-semibold">${faq.q}</h4>
+                    <svg class="faq-arrow w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </div>
-                
-                <div id="ai-workflow-container-${toolKey}" class="hidden">
-                    <div class="text-center mb-12">
-                         <h2 class="text-4xl md:text-5xl font-bold">Analyzing...</h2>
-                         <p class="text-xl secondary-text mt-6">Our AI is working...</p>
-                    </div>
-                    <div class="max-w-2xl mx-auto mt-8 space-y-6">
-                        <!-- Workflow steps will be injected here -->
-                    </div>
+                <div class="faq-answer pt-4">
+                    <p class="secondary-text text-lg">${faq.a}</p>
                 </div>
-
-                <div id="results-container-${toolKey}" class="hidden mt-8">
-                    <!-- AI Generated results will be injected here -->
-                </div>
-                 <div id="error-container-${toolKey}" class="hidden text-center mt-12 text-red-500 text-lg"></div>
             `;
-            document.getElementById(`generate-${toolKey}-button`).addEventListener('click', () => handleToolGeneration(toolKey));
-        }
+            faqContainer.appendChild(item);
+        });
 
-        toolTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                toolTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                renderTool(tab.dataset.tool);
+        faqContainer.addEventListener('click', (e) => {
+            const question = e.target.closest('.faq-question');
+            if (question) {
+                const item = question.parentElement;
+                item.classList.toggle('open');
+            }
+        });
+
+        // --- 3D Card Tilt Effect ---
+        const cards = document.querySelectorAll('.minimalist-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const { width, height } = rect;
+                const rotateX = (y / height - 0.5) * -15; // Max 7.5 deg tilt
+                const rotateY = (x / width - 0.5) * 15;  // Max 7.5 deg tilt
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
             });
         });
 
-        renderTool('competitor');
+        // --- Animated Service Metrics ---
+        const countUpObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = +el.dataset.count;
+                    let count = 0;
+                    const duration = 1500;
+                    const stepTime = Math.abs(Math.floor(duration / target));
 
-        async function handleToolGeneration(toolKey) {
-            const tool = toolTemplates[toolKey];
-            const formContainer = document.getElementById(`ai-form-container-${toolKey}`);
-            const workflowContainer = document.getElementById(`ai-workflow-container-${toolKey}`);
-            const resultsContainer = document.getElementById(`results-container-${toolKey}`);
-            const errorContainer = document.getElementById(`error-container-${toolKey}`);
+                    const timer = setInterval(() => {
+                        count++;
+                        el.textContent = `${count}%`;
+                        if (count === target) {
+                            clearInterval(timer);
+                        }
+                    }, stepTime);
 
-            const inputs = formContainer.querySelectorAll('input, textarea');
-            let allValid = true;
-            inputs.forEach(input => {
-                if (!input.value.trim()) allValid = false;
+                    observer.unobserve(el);
+                }
             });
+        }, { threshold: 0.7 });
 
-            if (!allValid) {
-                errorContainer.textContent = 'Please fill out all fields.';
-                errorContainer.classList.remove('hidden');
-                return;
+        document.querySelectorAll('[data-count]').forEach(el => {
+            countUpObserver.observe(el);
+        });
+
+        // --- Sleek Scrolling Header ---
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                header.classList.add('shadow-md');
+                header.classList.remove('bg-white/80');
+                header.classList.add('bg-white/95');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.add('bg-white/80');
+                header.classList.remove('bg-white/95');
             }
-
-            errorContainer.classList.add('hidden');
-            formContainer.classList.add('hidden');
-            workflowContainer.classList.remove('hidden');
-            resultsContainer.innerHTML = '';
-            resultsContainer.classList.add('hidden');
-            
-            const workflowStepsContainer = workflowContainer.querySelector('.space-y-6');
-            workflowStepsContainer.innerHTML = '';
-            const mockSteps = ["Initializing AI agent...", "Analyzing your request...", "Synthesizing response..."];
-            
-            for (let i = 0; i < mockSteps.length; i++) {
-                await new Promise(resolve => setTimeout(resolve, 800));
-                if (i > 0) {
-                    const prevStepEl = workflowStepsContainer.children[i-1];
-                    const spinner = prevStepEl.querySelector('.spinner');
-                    if(spinner) spinner.outerHTML = `<svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
-                }
-                const stepEl = document.createElement('div');
-                stepEl.className = 'workflow-step flex items-center text-lg';
-                stepEl.innerHTML = `<div class="spinner mr-4 flex-shrink-0"></div><span class="secondary-text">${mockSteps[i]}</span>`;
-                workflowStepsContainer.appendChild(stepEl);
-                setTimeout(() => stepEl.classList.add('visible'), 50);
-            }
-            
-            // --- LIVE API CALL ---
-            const apiKey = ""; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-            const prompt = tool.getPrompt();
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: tool.schema
-                }
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
-                
-                const result = await response.json();
-
-                if (result.candidates?.[0]?.content?.parts?.[0]) {
-                    const jsonText = result.candidates[0].content.parts[0].text;
-                    const parsedJson = JSON.parse(jsonText);
-                    
-                    const lastStepEl = workflowStepsContainer.lastChild;
-                    if(lastStepEl) {
-                        const spinner = lastStepEl.querySelector('.spinner');
-                        if(spinner) spinner.outerHTML = `<svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
-                    }
-
-                    tool.displayResults(parsedJson, resultsContainer);
-                    resultsContainer.classList.remove('hidden');
-                    resultsContainer.insertAdjacentHTML('beforeend', `<div class="text-center mt-16"><button onclick="resetTool('${toolKey}')" class="text-lg text-slate-600 hover:gradient-aurora-text transition-colors">Run Another Analysis &rarr;</button></div>`);
-
-                } else {
-                    throw new Error("Received an unexpected response from the AI.");
-                }
-
-            } catch (error) {
-                console.error('Error calling Gemini API:', error);
-                errorContainer.textContent = `An error occurred: ${error.message}`;
-                errorContainer.classList.remove('hidden');
-                workflowContainer.classList.add('hidden');
-                formContainer.classList.remove('hidden');
-            }
-        }
-
-        function resetTool(toolKey) {
-            const formContainer = document.getElementById(`ai-form-container-${toolKey}`);
-            document.getElementById(`ai-workflow-container-${toolKey}`).classList.add('hidden');
-            document.getElementById(`results-container-${toolKey}`).classList.add('hidden');
-            formContainer.classList.remove('hidden');
-            const inputs = formContainer.querySelectorAll('input, textarea');
-            inputs.forEach(input => input.value = '');
-        }
+        });
 
     </script>
 
